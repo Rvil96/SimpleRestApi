@@ -11,10 +11,8 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
@@ -28,7 +26,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     @Transactional
     public void addUser(User user) {
-//        user.setRoles(Collections.singleton(new Role("ROLE_USER")));
         userRepository.save(user);
     }
 
@@ -66,6 +63,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional
     public void removeUserById(long id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public boolean usernameExist(String name) {
+         return userRepository.existsByName(name);
     }
 
     @Override

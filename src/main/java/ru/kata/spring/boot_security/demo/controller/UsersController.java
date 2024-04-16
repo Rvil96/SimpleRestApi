@@ -11,14 +11,11 @@ import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 import ru.kata.spring.boot_security.demo.model.User;
 
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.Collections;
 
 
 @Controller
+@RequestMapping("/user")
 public class UsersController {
     private final UserService userService;
     private final RoleService roleService;
@@ -29,56 +26,30 @@ public class UsersController {
         this.roleService = roleService;
     }
 
-    @GetMapping("/")
-    public String getAllUsers(Model model) {
-        List<User> users = userService.getAllUsers();
-        model.addAttribute("allUser", users);
-        return "users";
-    }
 
     @GetMapping("/profile")
     public String showUserProfile(@RequestParam("id") Long id,
                            Model model) {
         User user = userService.getUserById(id);
         model.addAttribute("user", user);
-        return "profile";
-    }
-
-    @GetMapping("/create")
-    public String newUser(@ModelAttribute("user") User user, Model model) {
-        model.addAttribute("role_list", roleService.getAllRole());
-        return "createUser";
-    }
-
-    @PostMapping
-    public String create(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "createUser";
-        }
-        userService.addUser(user);
-        return "redirect:/";
+        return "/user/profile";
     }
 
     @GetMapping("/edit")
     public String edit(@RequestParam("id") Long id, Model model) {
         model.addAttribute("updatableUser", userService.getUserById(id));
-        model.addAttribute("role_list", roleService.getAllRole());
-        return "/edit";
+        return "/user/edit";
     }
     @PatchMapping("/update")
     public String update(@ModelAttribute("updatableUser") @Valid User user,
                          BindingResult bindingResult, @RequestParam("id") Long id) {
         if (bindingResult.hasErrors()) {
-            return "/edit";
+            return "/user/edit";
         }
+        user.setRoles(Collections.singleton(new Role("ROLE_USER")));
         userService.updateUserById(id, user);
-        return "redirect:/";
+        return String.format("redirect:/user/profile?id=%s", id);
     }
 
-    @DeleteMapping("/delete")
-    public String delete(@RequestParam Long id) {
-        userService.removeUserById(id);
-        return "redirect:/";
-    }
 
 }

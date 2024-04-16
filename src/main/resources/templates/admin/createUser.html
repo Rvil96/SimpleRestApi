@@ -3,11 +3,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Edit user</title>
+    <title>Create user</title>
 </head>
 <body>
 
-<form th:method="PATCH" th:action="@{/update?id={id}(id=${updatableUser.getId()})}" th:object="${updatableUser}">
+<form th:method="POST" th:action="@{/admin/}" th:object="${user}">
     <label for="name">Enter name</label>
     <input type="text" th:field="*{name}" id="name"/>
     <div style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</div>
@@ -25,15 +25,16 @@
     <div style="color: red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age error</div>
     <br/>
     <label>Roles:
-        <input type="checkbox" name="roles"
-               th:each="role : ${role_list}"
-               th:text="${role.getAuthority()}"
-               th:value="${role.getId()}"
-               th:field="*{roles}"
-        />
-    </label>
+            <input  type="checkbox" name="roles"
+                   th:each="role : ${role_list}"
+                   th:text="${role.getAuthority()}"
+                   th:value="${role.getId()}"
+                   th:field="*{roles}"
+            />
+        </label>
     <br/>
-    <input type="submit" value="Обновить данные"/>
+    <input type="submit" value="Create!"/>
+
 </form>
 
 <div th:if="${#httpServletRequest.userPrincipal != null}">

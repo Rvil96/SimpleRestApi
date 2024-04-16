@@ -26,9 +26,9 @@
         </td>
     </tr>
 </table>
-<a th:href="@{/edit?id={id}(id=${user.getId()})}" class="button">Update profile</a>
+<a th:href="@{/admin/edit?id={id}(id=${user.getId()})}" class="button">Update profile</a>
 
-<form th:method="DELETE" th:action="@{/delete?id={id}(id=${user.getId()})}" class="button">
+<form th:method="DELETE" th:action="@{/admin/delete?id={id}(id=${user.getId()})}" class="button">
     <input type="submit" value="Delete">
 </form>
 

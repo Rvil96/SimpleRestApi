@@ -3,11 +3,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>All users</title>
+    <title>Admin page</title>
 </head>
 <body>
 
-<h1>All users</h1>
+<h1>Admin page</h1>
 <table th:border="1">
     <tr>
         <th>Name</th>
@@ -16,19 +16,19 @@
     </tr>
     <tr th:each="user : ${allUser}">
         <td>
-            <a th:href="@{/profile(id=${user.getId()})}" th:utext="${user.getName()}">name</a>
+            <a th:href="@{/admin/profile(id=${user.getId()})}" th:utext="${user.getName()}">name</a>
         </td>
         <td>
-            <a th:href="@{/profile(id=${user.getId()})}" th:utext="${user.getSurname()}">name</a>
+            <a th:href="@{/admin/profile(id=${user.getId()})}" th:utext="${user.getSurname()}">name</a>
         </td>
         <td>
-            <a th:href="@{/profile(id=${user.getId()})}" th:utext="${user.getAge()}">name</a>
+            <a th:href="@{/admin/profile(id=${user.getId()})}" th:utext="${user.getAge()}">name</a>
         </td>
     </tr>
 </table>
 
 <div>
-    <form th:action="@{/create}">
+    <form th:action="@{/admin/create}">
         <button type="submit">Создать нового пользователя</button>
     </form>
 </div>
