@@ -26,13 +26,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final SuccessUserHandler successUserHandler;
     private final UserDetailsService userDetails;
 
-    private UserRepository userRepository;
-
     @Autowired
-    public WebSecurityConfig(SuccessUserHandler successUserHandler, UserDetailsService userDetails, UserRepository userRepository) {
+    public WebSecurityConfig(SuccessUserHandler successUserHandler, UserDetailsService userDetails) {
         this.successUserHandler = successUserHandler;
         this.userDetails = userDetails;
-        this.userRepository = userRepository;
     }
 
 
@@ -62,7 +59,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetails);
         provider.setPasswordEncoder(passwordEncoder());
-
 
         return provider;
     }

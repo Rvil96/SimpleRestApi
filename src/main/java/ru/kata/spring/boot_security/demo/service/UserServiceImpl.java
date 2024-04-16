@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     @Transactional
     public void addUser(User user) {
-        user.setRoles(Collections.singleton(new Role("ROLE_USER")));
+//        user.setRoles(Collections.singleton(new Role("ROLE_USER")));
         userRepository.save(user);
     }
 

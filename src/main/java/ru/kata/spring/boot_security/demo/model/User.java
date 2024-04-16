@@ -40,7 +40,7 @@ public class User implements UserDetails {
     @Size(min = 2, max = 24, message = "Min size password 2, max size password 24")
     private String password;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "user_roles",
     joinColumns = @JoinColumn(name = "user_id"),
     inverseJoinColumns = @JoinColumn(name = "role_id"))

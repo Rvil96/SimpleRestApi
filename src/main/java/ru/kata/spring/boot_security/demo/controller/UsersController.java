@@ -6,20 +6,27 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.model.Role;
+import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 import ru.kata.spring.boot_security.demo.model.User;
 
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Controller
 public class UsersController {
     private final UserService userService;
+    private final RoleService roleService;
 
     @Autowired
-    public UsersController(UserService userService) {
+    public UsersController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @GetMapping("/")
@@ -38,7 +45,8 @@ public class UsersController {
     }
 
     @GetMapping("/create")
-    public String newUser(@ModelAttribute("user") User user) {
+    public String newUser(@ModelAttribute("user") User user, Model model) {
+        model.addAttribute("role_list", roleService.getAllRole());
         return "createUser";
     }
 
@@ -54,6 +62,7 @@ public class UsersController {
     @GetMapping("/edit")
     public String edit(@RequestParam("id") Long id, Model model) {
         model.addAttribute("updatableUser", userService.getUserById(id));
+        model.addAttribute("role_list", roleService.getAllRole());
         return "/edit";
     }
     @PatchMapping("/update")
