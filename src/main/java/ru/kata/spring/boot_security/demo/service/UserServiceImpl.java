@@ -29,16 +29,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userRepository.save(user);
     }
 
-    public void createAdmin() {
-        User admin = new User();
-        admin.setName("admin");
-        admin.setPassword("admin");
-        HashSet<Role> rolesAdmin = new HashSet<>();
-        rolesAdmin.add(new Role("ROLE_ADMIN"));
-        rolesAdmin.add(new Role("ROLE_USER"));
-        admin.setRoles(rolesAdmin);
-        addUser(admin);
-    }
 
     @Override
     @Transactional(readOnly = true)

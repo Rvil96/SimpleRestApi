@@ -7,7 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.Role;
-import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 import ru.kata.spring.boot_security.demo.model.User;
 
@@ -18,12 +17,10 @@ import java.util.Collections;
 @RequestMapping("/user")
 public class UsersController {
     private final UserService userService;
-    private final RoleService roleService;
 
     @Autowired
-    public UsersController(UserService userService, RoleService roleService) {
+    public UsersController(UserService userService) {
         this.userService = userService;
-        this.roleService = roleService;
     }
 
 
@@ -46,7 +43,7 @@ public class UsersController {
         if (bindingResult.hasErrors()) {
             return "/user/edit";
         }
-        user.setRoles(Collections.singleton(new Role("ROLE_USER")));
+//        user.setRoles(Collections.singleton(new Role("ROLE_USER")));
         userService.updateUserById(id, user);
         return String.format("redirect:/user/profile?id=%s", id);
     }

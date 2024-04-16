@@ -4,7 +4,16 @@ package ru.kata.spring.boot_security.demo.model;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Column;
+import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.CascadeType;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
@@ -22,7 +31,7 @@ public class User implements UserDetails {
     @Column(name = "username", unique = true)
     @NotEmpty(message = "Name can't be empty")
     @Size(min = 2, max = 24, message = "Min size name 2, max size name 24")
-    @Pattern(regexp = "^[a-zA-Zа-яА-Я]+$", message = "Does not correspond to the format")
+    @Pattern(regexp = "^[a-zA-Zа-яА-Я0-9_-]{3,16}$", message = "Does not correspond to the format")
     private String name;
 
     @Column(name = "surname")

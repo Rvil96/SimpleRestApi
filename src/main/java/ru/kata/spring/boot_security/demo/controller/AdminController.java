@@ -4,18 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
-import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
-import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -74,6 +68,8 @@ public class AdminController {
     @PostMapping
     public String create(@ModelAttribute("user") @Valid User user, BindingResult bindingResult,
                          Model model) {
+        //проверка существует ли такое имя. тк name unique в последствии
+        // можно переделать на email или login
         if (userService.usernameExist(user.getName())) {
             bindingResult.rejectValue("name", "error.name", "Пользователь с таким именем уже существует");
             return "admin/createUser";
