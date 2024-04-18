@@ -46,7 +46,6 @@ public class User implements UserDetails {
 
     @Column(name = "password")
     @NotEmpty
-    @Size(min = 2, max = 24, message = "Min size password 2, max size password 24")
     private String password;
 
     @ManyToMany(cascade = CascadeType.PERSIST)

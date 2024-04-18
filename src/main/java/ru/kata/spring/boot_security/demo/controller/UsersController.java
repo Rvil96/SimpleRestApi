@@ -32,21 +32,5 @@ public class UsersController {
         return "/user/profile";
     }
 
-    @GetMapping("/edit")
-    public String edit(@RequestParam("id") Long id, Model model) {
-        model.addAttribute("updatableUser", userService.getUserById(id));
-        return "/user/edit";
-    }
-    @PatchMapping("/update")
-    public String update(@ModelAttribute("updatableUser") @Valid User user,
-                         BindingResult bindingResult, @RequestParam("id") Long id) {
-        if (bindingResult.hasErrors()) {
-            return "/user/edit";
-        }
-//        user.setRoles(Collections.singleton(new Role("ROLE_USER")));
-        userService.updateUserById(id, user);
-        return String.format("redirect:/user/profile?id=%s", id);
-    }
-
 
 }

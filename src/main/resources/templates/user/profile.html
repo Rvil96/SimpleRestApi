@@ -26,7 +26,6 @@
         </td>
     </tr>
 </table>
-<a th:href="@{/user/edit?id={id}(id=${user.getId()})}" class="button">Update profile</a>
 
 <div th:if="${#httpServletRequest.userPrincipal != null}">
     <form th:action="@{/logout}" method="post">
