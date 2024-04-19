@@ -25,11 +25,13 @@ import java.util.HashSet;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final SuccessUserHandler successUserHandler;
     private final UserDetailsService userDetails;
+    private final PasswordEncoderImpl passwordEncoder;
 
     @Autowired
-    public WebSecurityConfig(SuccessUserHandler successUserHandler, UserDetailsService userDetails) {
+    public WebSecurityConfig(SuccessUserHandler successUserHandler, UserDetailsService userDetails, PasswordEncoderImpl passwordEncoder) {
         this.successUserHandler = successUserHandler;
         this.userDetails = userDetails;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -49,17 +51,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
 
 
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetails);
-        provider.setPasswordEncoder(passwordEncoder());
+        provider.setPasswordEncoder(passwordEncoder.getPasswordEncoder());
 
         return provider;
     }

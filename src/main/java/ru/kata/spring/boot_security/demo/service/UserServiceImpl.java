@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.kata.spring.boot_security.demo.configs.PasswordEncoderImpl;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
@@ -15,15 +17,19 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
+    private final PasswordEncoderImpl passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoderImpl passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
+
 
     @Override
     @Transactional
     public void addUser(User user) {
+        user.setPassword(passwordEncoder.getPasswordEncoder().encode(user.getPassword()));
         userRepository.save(user);
     }
 
@@ -43,6 +49,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     @Transactional
     public void updateUserById(long id, User updatedUser) {
+        updatedUser.setPassword(passwordEncoder.getPasswordEncoder().encode(updatedUser.getPassword()));
         updatedUser.setId(id);
         userRepository.save(updatedUser);
     }
