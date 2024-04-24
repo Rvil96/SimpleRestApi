@@ -13,7 +13,7 @@
 					<span class="navbar-text">
 						<strong th:text="${user.getEmail()}"></strong> with role:
 						<span th:each="role, iterStat : ${user.getRoles()}">
-							<span th:text="${role.getAuthority()}"></span>
+							<span th:text="${role.getShortRoleName()}"></span>
 							<span th:if="${!iterStat.last}"> </span>
 						</span>
 					</span>
@@ -72,8 +72,11 @@
                         <td>
                             <a th:utext="${user.getEmail()}">Email</a>
                         </td>
-                        <td th:each="role : ${user.getRoles()}">
-                            <a th:utext="${role.getAuthority()}">Role</a>
+                        <td>
+                            <span th:each="role, iterStat : ${user.getRoles()}">
+                                <span th:text="${role.getShortRoleName()}"></span>
+                                <span th:if="${!iterStat.last}"> </span>
+                            </span>
                         </td>
                     </tr>
                     </tbody>

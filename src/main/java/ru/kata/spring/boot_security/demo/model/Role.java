@@ -68,5 +68,9 @@ public class Role implements GrantedAuthority {
         this.users = users;
     }
 
+    public String getShortRoleName () {
+        return nameRole.replace("ROLE_", "");
+    }
+
 
 }

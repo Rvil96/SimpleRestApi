@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <link rel="stylesheet" href="../../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
     <title>Admin page</title>
 </head>
@@ -12,7 +12,7 @@
 					<span class="navbar-text">
 						<strong th:text="${user.getEmail()}"></strong> with role:
 						<span th:each="role, iterStat : ${user.getRoles()}">
-							<span th:text="${role.getAuthority()}"></span>
+							<span th:text="${role.getShortRoleName()}"></span>
 							<span th:if="${!iterStat.last}"> </span>
 						</span>
 					</span>
@@ -28,11 +28,12 @@
     <div class="row vh-100">
         <!-- Навигационная панель слева -->
         <div class="col-md-2 px-0">
-            <div  class="d-grid gap-1">
-                <a class="btn btn-primary text-start rounded-1 mt-1" >Admin</a>
+            <div class="d-grid gap-1">
+                <a class="btn btn-primary text-start rounded-1 mt-1">Admin</a>
             </div>
             <div class="d-grid gap-1">
-                <a class="btn btn-link text-start rounded-1 mt-1" th:href="@{/user/profile(id=${user.getId()})}">User</a>
+                <a class="btn btn-link text-start rounded-1 mt-1"
+                   th:href="@{/user/profile(id=${user.getId()})}">User</a>
             </div>
         </div>
         <!-- Рабочая область справа -->
@@ -43,10 +44,12 @@
                     <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">User table</a>
+                                <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home" role="tab"
+                                   aria-controls="home" aria-selected="true">User table</a>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">New user</a>
+                                <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#profile" role="tab"
+                                   aria-controls="profile" aria-selected="false">New user</a>
                             </li>
                         </ul>
                     </div>
@@ -89,14 +92,15 @@
                                             <a th:utext="${iterableUser.getEmail()}">Email</a>
                                         </td>
                                         <td>
-															<span th:each="role, iterStat : ${iterableUser.getRoles()}">
-																<span th:text="${role.getAuthority()}"></span>
-																<span th:if="${!iterStat.last}"> </span>
-															</span>
+                                            <span th:each="role, iterStat : ${iterableUser.getRoles()}">
+                                                <span th:text="${role.getShortRoleName()}"></span>
+                                                <span th:if="${!iterStat.last}"> </span>
+                                            </span>
                                         </td>
                                         <!--Изменение пользователя-->
                                         <td>
-                                            <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" th:data-bs-target="${'#edituser'+iterableUser.getId()}">
+                                            <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                                    th:data-bs-target="${'#edituser'+iterableUser.getId()}">
                                                 Edit
                                             </button>
                                             <form
@@ -111,40 +115,77 @@
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">Edit page</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            <h5 class="modal-title" id="exampleModalLabel">Edit
+                                                                page</h5>
+                                                            <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <label for="editName">Name</label>
-                                                            <input type="text" th:value="${iterableUser.getName()}" name="name" id="editName" />
-                                                            <br />
-                                                            <label for="editSurname">Enter surname</label>
-                                                            <input type="text" th:value="${iterableUser.getSurname()}" name="surname" id="editSurname" />
-                                                            <br />
-                                                            <label for="editEmail">Enter Email</label>
-                                                            <input type="text" th:value="${iterableUser.getEmail()}" name="email" id="editEmail" />
-                                                            <br />
-                                                            <label for="editPassword">Enter password</label>
-                                                            <input type="password" th:value="${iterableUser.getPassword()}" name="password" id="editPassword" />
-                                                            <br />
-                                                            <label for="editAge">Enter age</label>
-                                                            <input type="number" th:value="${iterableUser.getAge()}" name="age" id="editAge" />
-                                                            <br />
-                                                            <label>
-                                                                Roles:
-                                                                <input
-                                                                        type="checkbox"
-                                                                        name="roles"
-                                                                        th:each="role : ${role_list}"
-                                                                        th:text="${role.getAuthority()}"
-                                                                        th:value="${role.getId()}"
-                                                                        th:checked="${iterableUser.getRoles().contains(role)}"
-                                                                />
-                                                            </label>
+
+
+                                                            <div class="row justify-content-center">
+                                                                <div class="col-8">
+
+                                                                        <div class="form-group">
+                                                                            <label for="name" class="form-label">First name</label>
+                                                                            <input type="text" class="form-control" name="name" id="editName"
+                                                                                   required="" th:value="${iterableUser.getName()}"/>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label for="surname" class="form-label">Last name</label>
+                                                                            <input type="text" class="form-control" name="surname" id="editSurname"
+                                                                                   required="" th:value="${iterableUser.getSurname()}"/>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label for="email" class="form-label">Username</label>
+                                                                            <div class="input-group">
+                                                                                <input type="text" class="form-control" name="email" id="editEmail"
+                                                                                       aria-describedby="validationTooltipUsernamePrepend"
+                                                                                       required="" th:value="${iterableUser.getEmail()}"/>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label for="password" class="form-label">Password</label>
+                                                                            <input type="hidden" class="form-control" name="password"
+                                                                                   id="editPassword"
+                                                                                   required="" th:value="${iterableUser.getPassword()}"/>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label class="form-label">Role</label>
+                                                                            <div class="dropdown">
+                                                                                <button class="btn btn-secondary dropdown-toggle" type="button"
+                                                                                        id="dropdownMenuButton2" data-bs-toggle="dropdown"
+                                                                                        aria-expanded="false">
+                                                                                    Choose...
+                                                                                </button>
+                                                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                                                    <!-- Используем th:each для добавления чекбоксов для каждой роли из ${role_list} -->
+                                                                                    <li th:each="role : ${role_list}">
+                                                                                        <input type="checkbox" id="editRole" name="roles"
+                                                                                               th:value="${role.getId()}"
+                                                                                               th:checked="${iterableUser.getRoles().contains(role)}"/>
+                                                                                        <label th:for="${role.getId()}"
+                                                                                               th:text="${role.getAuthority()}"></label>
+                                                                                    </li>
+                                                                                </ul>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label for="age" class="form-label">Age</label>
+                                                                            <input type="number" class="form-control" id="editAge" required=""
+                                                                                   th:value="${iterableUser.getAge()}" name="age"/>
+                                                                        </div>
+
+                                                                </div>
+                                                            </div>
+
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                            <button type="submit" class="btn btn-primary">Save change</button>
+                                                            <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">Close
+                                                            </button>
+                                                            <button type="submit" class="btn btn-primary">Save change
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -152,7 +193,8 @@
                                         </td>
                                         <!--Удаление-->
                                         <td>
-                                            <form th:method="DELETE" th:action="@{/admin/delete?id={id}(id=${iterableUser.getId()})}">
+                                            <form th:method="DELETE"
+                                                  th:action="@{/admin/delete?id={id}(id=${iterableUser.getId()})}">
                                                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                             </form>
                                         </td>
@@ -163,67 +205,64 @@
 
                             <!-- Вкладка создания  -->
                             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                                <form class="row g-3 needs-validation" th:method="POST" th:action="@{/admin/addUser}">
-                                    <div class="col-md-4 position-relative">
-                                        <label for="name" class="form-label">First name</label>
-                                        <input type="text" class="form-control" name="name" id="name" required="" />
-                                        <div class="valid-tooltip">
-                                            Looks good!
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 position-relative">
-                                        <label for="surname" class="form-label">Last name</label>
-                                        <input type="text" class="form-control" name="surname" id="surname" required="" />
-                                        <div class="valid-tooltip">
-                                            Looks good!
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 position-relative">
-                                        <label for="email" class="form-label">Username</label>
-                                        <div class="input-group has-validation">
-                                            <span class="input-group-text" id="validationTooltipUsernamePrepend">@</span>
-                                            <input type="text" class="form-control" name="email" id="email" aria-describedby="validationTooltipUsernamePrepend" required="" />
-                                            <div class="invalid-tooltip">
-                                                Please choose a unique and valid username.
+                                <!--форма-->
+                                <div class="row justify-content-center">
+                                    <div class="col-4">
+                                        <form th:method="POST"
+                                              th:action="@{/admin/addUser}">
+                                            <div class="form-group">
+                                                <label for="name" class="form-label">First name</label>
+                                                <input type="text" class="form-control" name="name" id="name"
+                                                       required=""/>
                                             </div>
-                                        </div>
+                                            <div class="form-group">
+                                                <label for="surname" class="form-label">Last name</label>
+                                                <input type="text" class="form-control" name="surname" id="surname"
+                                                       required=""/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="email" class="form-label">Username</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" name="email" id="email"
+                                                           aria-describedby="validationTooltipUsernamePrepend"
+                                                           required=""/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="password" class="form-label">Password</label>
+                                                <input type="password" class="form-control" name="password"
+                                                       id="password"
+                                                       required=""/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label">Role</label>
+                                                <div class="dropdown">
+                                                    <button class="btn btn-secondary dropdown-toggle" type="button"
+                                                            id="dropdownMenuButton" data-bs-toggle="dropdown"
+                                                            aria-expanded="false">
+                                                        Choose...
+                                                    </button>
+                                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                        <!-- Используем th:each для добавления чекбоксов для каждой роли из ${role_list} -->
+                                                        <li th:each="role : ${role_list}">
+                                                            <input type="checkbox" id="role" name="roles"
+                                                                   th:value="${role.getId()}"/>
+                                                            <label th:for="${role.getId()}"
+                                                                   th:text="${role.getAuthority()}"></label>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="age" class="form-label">Age</label>
+                                                <input type="number" class="form-control" id="age" required="" name="age"/>
+                                            </div>
+                                            <div class="mt-2 ">
+                                                <button class="btn btn-success" type="submit">Create new user</button>
+                                            </div>
+                                        </form>
                                     </div>
-                                    <div class="col-md-6 position-relative">
-                                        <label for="password" class="form-label">Password</label>
-                                        <input type="password" class="form-control" name="password" id="password" required="" />
-                                        <div class="invalid-tooltip">
-                                            Please provide a valid password.
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 position-relative">
-                                        <label class="form-label">Role</label>
-                                        <div class="dropdown">
-                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                                Choose...
-                                            </button>
-                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <!-- Используем th:each для добавления чекбоксов для каждой роли из ${role_list} -->
-                                                <li th:each="role : ${role_list}">
-                                                    <input type="checkbox" id="role" name="roles" th:value="${role.getId()}" />
-                                                    <label th:for="${role.getId()}" th:text="${role.getAuthority()}"></label>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="invalid-tooltip">
-                                            Please select a valid state.
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 position-relative">
-                                        <label for="age" class="form-label">Age</label>
-                                        <input type="number" class="form-control" id="age" required="" />
-                                        <div class="invalid-tooltip">
-                                            Please provide a valid role.
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <button class="btn btn-primary" type="submit">Create new user</button>
-                                    </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -233,7 +272,9 @@
     </div>
 </div>
 
-<script th:src="@{/js/bootstrap.min.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
 </body>
 </html>
 
