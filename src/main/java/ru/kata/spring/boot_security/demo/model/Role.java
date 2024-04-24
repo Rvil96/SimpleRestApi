@@ -21,7 +21,7 @@ public class Role implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name = "name_role")
-    private  String nameRole;
+    private String nameRole;
 
     @ManyToMany
     @JoinTable(name = "user_roles",
@@ -29,7 +29,8 @@ public class Role implements GrantedAuthority {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> users;
 
-    public Role() {}
+    public Role() {
+    }
 
     public int getId() {
         return id;
@@ -47,6 +48,7 @@ public class Role implements GrantedAuthority {
         this.nameRole = nameRole;
         this.users = users;
     }
+
     @Override
     public String getAuthority() {
         return nameRole;
@@ -68,7 +70,7 @@ public class Role implements GrantedAuthority {
         this.users = users;
     }
 
-    public String getShortRoleName () {
+    public String getShortRoleName() {
         return nameRole.replace("ROLE_", "");
     }
 

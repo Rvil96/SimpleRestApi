@@ -6,11 +6,11 @@ import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
-public class RoleServiceImpl implements RoleService{
+public class RoleServiceImpl implements RoleService {
     private final RoleRepository repository;
+
     @Autowired
     public RoleServiceImpl(RoleRepository repository) {
         this.repository = repository;
@@ -19,7 +19,7 @@ public class RoleServiceImpl implements RoleService{
     @Override
     public List<Role> getAllRole() {
         List<Role> roles = repository.findAll();
-        if(roles.isEmpty()) {
+        if (roles.isEmpty()) {
             roles.add(new Role("ROLE_ADMIN"));
             roles.add(new Role("ROLE_USER"));
         }

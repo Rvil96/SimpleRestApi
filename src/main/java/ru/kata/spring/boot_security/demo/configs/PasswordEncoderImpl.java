@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class PasswordEncoderImpl {
     private final PasswordEncoder passwordEncoder;
+
     public PasswordEncoderImpl() {
         passwordEncoder = new BCryptPasswordEncoder();
     }

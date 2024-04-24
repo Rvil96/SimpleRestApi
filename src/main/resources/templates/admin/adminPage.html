@@ -121,61 +121,75 @@
                                                                     data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
-
-
                                                             <div class="row justify-content-center">
                                                                 <div class="col-8">
 
-                                                                        <div class="form-group">
-                                                                            <label for="name" class="form-label">First name</label>
-                                                                            <input type="text" class="form-control" name="name" id="editName"
-                                                                                   required="" th:value="${iterableUser.getName()}"/>
+                                                                    <div class="form-group">
+                                                                        <label for="name" class="form-label">First
+                                                                            name</label>
+                                                                        <input type="text" class="form-control"
+                                                                               name="name" id="editName"
+                                                                               required=""
+                                                                               th:value="${iterableUser.getName()}"/>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="surname" class="form-label">Last
+                                                                            name</label>
+                                                                        <input type="text" class="form-control"
+                                                                               name="surname" id="editSurname"
+                                                                               required=""
+                                                                               th:value="${iterableUser.getSurname()}"/>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="email"
+                                                                               class="form-label">Username</label>
+                                                                        <div class="input-group">
+                                                                            <input type="text" class="form-control"
+                                                                                   name="email" id="editEmail"
+                                                                                   aria-describedby="validationTooltipUsernamePrepend"
+                                                                                   required=""
+                                                                                   th:value="${iterableUser.getEmail()}"/>
                                                                         </div>
-                                                                        <div class="form-group">
-                                                                            <label for="surname" class="form-label">Last name</label>
-                                                                            <input type="text" class="form-control" name="surname" id="editSurname"
-                                                                                   required="" th:value="${iterableUser.getSurname()}"/>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="password" class="form-label">Password</label>
+                                                                        <input type="password" class="form-control"
+                                                                               name="password"
+                                                                               id="editPassword"
+                                                                               required=""
+                                                                        />
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Role</label>
+                                                                        <div class="dropdown">
+                                                                            <button class="btn btn-secondary dropdown-toggle"
+                                                                                    type="button"
+                                                                                    id="dropdownMenuButton2"
+                                                                                    data-bs-toggle="dropdown"
+                                                                                    aria-expanded="false">
+                                                                                Choose role
+                                                                            </button>
+                                                                            <ul class="dropdown-menu"
+                                                                                aria-labelledby="dropdownMenuButton">
+                                                                                <!-- Используем th:each для добавления чекбоксов для каждой роли из ${role_list} -->
+                                                                                <li th:each="role : ${role_list}">
+                                                                                    <input type="checkbox" id="editRole"
+                                                                                           name="roles"
+                                                                                           th:value="${role.getId()}"
+                                                                                           th:checked="${iterableUser.getRoles().contains(role)}"/>
+                                                                                    <label th:for="${role.getId()}"
+                                                                                           th:text="${role.getAuthority()}"></label>
+                                                                                </li>
+                                                                            </ul>
                                                                         </div>
-                                                                        <div class="form-group">
-                                                                            <label for="email" class="form-label">Username</label>
-                                                                            <div class="input-group">
-                                                                                <input type="text" class="form-control" name="email" id="editEmail"
-                                                                                       aria-describedby="validationTooltipUsernamePrepend"
-                                                                                       required="" th:value="${iterableUser.getEmail()}"/>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label for="password" class="form-label">Password</label>
-                                                                            <input type="hidden" class="form-control" name="password"
-                                                                                   id="editPassword"
-                                                                                   required="" th:value="${iterableUser.getPassword()}"/>
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label class="form-label">Role</label>
-                                                                            <div class="dropdown">
-                                                                                <button class="btn btn-secondary dropdown-toggle" type="button"
-                                                                                        id="dropdownMenuButton2" data-bs-toggle="dropdown"
-                                                                                        aria-expanded="false">
-                                                                                    Choose...
-                                                                                </button>
-                                                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                                                    <!-- Используем th:each для добавления чекбоксов для каждой роли из ${role_list} -->
-                                                                                    <li th:each="role : ${role_list}">
-                                                                                        <input type="checkbox" id="editRole" name="roles"
-                                                                                               th:value="${role.getId()}"
-                                                                                               th:checked="${iterableUser.getRoles().contains(role)}"/>
-                                                                                        <label th:for="${role.getId()}"
-                                                                                               th:text="${role.getAuthority()}"></label>
-                                                                                    </li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label for="age" class="form-label">Age</label>
-                                                                            <input type="number" class="form-control" id="editAge" required=""
-                                                                                   th:value="${iterableUser.getAge()}" name="age"/>
-                                                                        </div>
-
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="age" class="form-label">Age</label>
+                                                                        <input type="number" class="form-control"
+                                                                               id="editAge" required=""
+                                                                               th:value="${iterableUser.getAge()}"
+                                                                               name="age"/>
+                                                                    </div>
                                                                 </div>
                                                             </div>
 
@@ -240,7 +254,7 @@
                                                     <button class="btn btn-secondary dropdown-toggle" type="button"
                                                             id="dropdownMenuButton" data-bs-toggle="dropdown"
                                                             aria-expanded="false">
-                                                        Choose...
+                                                        Choose role
                                                     </button>
                                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                         <!-- Используем th:each для добавления чекбоксов для каждой роли из ${role_list} -->
@@ -255,7 +269,8 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="age" class="form-label">Age</label>
-                                                <input type="number" class="form-control" id="age" required="" name="age"/>
+                                                <input type="number" class="form-control" id="age" required=""
+                                                       name="age"/>
                                             </div>
                                             <div class="mt-2 ">
                                                 <button class="btn btn-success" type="submit">Create new user</button>
@@ -271,6 +286,7 @@
         </div>
     </div>
 </div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"

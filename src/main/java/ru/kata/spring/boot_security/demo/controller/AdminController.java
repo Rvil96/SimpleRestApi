@@ -20,7 +20,6 @@ public class AdminController {
     private final RoleService roleService;
 
 
-
     @Autowired
     public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
@@ -40,22 +39,27 @@ public class AdminController {
         return "admin/adminPage";
     }
 
-    @GetMapping("/edit")
-    public String edit(@RequestParam("id") Long id, Model model) {
-        model.addAttribute("updatableUser", userService.getUserById(id));
-        model.addAttribute("role_list", roleService.getAllRole());
-        return "/admin/edit";
-    }
+//    @GetMapping("/edit")
+//    public String edit(@RequestParam("id") Long id, Model model) {
+//        model.addAttribute("updatableUser", userService.getUserById(id));
+//        model.addAttribute("role_list", roleService.getAllRole());
+//        return "/admin/edit";
+//    }
 
     @PatchMapping("/update")
     public String update(@ModelAttribute @Valid User user,
                          BindingResult bindingResult, @RequestParam("id") Long id) {
-
         if (bindingResult.hasErrors()) {
-            return "/admin/edit";
+            return String.format("redirect:/admin/profile?id=%s", getCurrentId());
+        }
+
+        if (user.getPassword() == null) {
+            String userPassword = userService.getUserById(id).getPassword();
+            user.setPassword(userPassword);
         }
         userService.updateUserById(id, user);
-        return String.format("redirect:/admin/profile?id=%s",getCurrentId());
+
+        return String.format("redirect:/admin/profile?id=%s", getCurrentId());
     }
 
 //    @GetMapping("/")
@@ -65,32 +69,32 @@ public class AdminController {
 //        return "admin/adminpage";
 //    }
 
-    @GetMapping("/create")
-    public String newUser(@ModelAttribute("user") User user, Model model) {
-        model.addAttribute("role_list", roleService.getAllRole());
-        return "admin/createUser";
-    }
+//    @GetMapping("/create")
+//    public String newUser(@ModelAttribute("user") User user, Model model) {
+//        model.addAttribute("role_list", roleService.getAllRole());
+//        return "admin/createUser";
+//    }
 
     @PostMapping("/addUser")
     public String create(@ModelAttribute @Valid User user, BindingResult bindingResult) {
 
         if (userService.emailExist(user.getEmail())) {
             bindingResult.rejectValue("email", "error.email", "Пользователь с таким именем уже существует");
-            return "admin/createUser";
+            return String.format("redirect:/admin/profile?id=%s", getCurrentId());
         }
         if (bindingResult.hasErrors()) {
-            return "admin/createUser";
+            return String.format("redirect:/admin/profile?id=%s", getCurrentId());
         }
 
         userService.addUser(user);
 
-        return String.format("redirect:/admin/profile?id=%s",getCurrentId());
+        return String.format("redirect:/admin/profile?id=%s", getCurrentId());
     }
 
     @DeleteMapping("/delete")
     public String delete(@RequestParam Long id) {
         userService.removeUserById(id);
-        return String.format("redirect:/admin/profile?id=%s",getCurrentId());
+        return String.format("redirect:/admin/profile?id=%s", getCurrentId());
     }
 
     private long getCurrentId() {
