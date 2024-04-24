@@ -14,10 +14,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.CascadeType;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.Collection;
 import java.util.Set;
 
@@ -29,9 +26,13 @@ public class User implements UserDetails {
     private long id;
 
     @Column(name = "username", unique = true)
+    @Email
+    private String email;
+
+    @Column(name = "firstname")
     @NotEmpty(message = "Name can't be empty")
     @Size(min = 2, max = 24, message = "Min size name 2, max size name 24")
-    @Pattern(regexp = "^[a-zA-Zа-яА-Я0-9_-]{3,16}$", message = "Does not correspond to the format")
+    @Pattern(regexp = "^[a-zA-Zа-яА-Я]+$", message = "Does not correspond to the format")
     private String name;
 
     @Column(name = "surname")
@@ -57,12 +58,13 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String name, String surname, int age, Set<Role> roles, String password) {
+    public User(String name,String email, String surname, int age, Set<Role> roles, String password) {
         this.name = name;
         this.surname = surname;
         this.age = age;
         this.roles = roles;
         this.password = password;
+        this.email = email;
     }
     public void setPassword(String password) {
         this.password = password;
@@ -106,6 +108,14 @@ public class User implements UserDetails {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override

@@ -23,13 +23,12 @@ public class UsersController {
         this.userService = userService;
     }
 
-
     @GetMapping("/profile")
     public String showUserProfile(@RequestParam("id") Long id,
                            Model model) {
         User user = userService.getUserById(id);
         model.addAttribute("user", user);
-        return "/user/profile";
+        return "/user/userPage";
     }
 
 

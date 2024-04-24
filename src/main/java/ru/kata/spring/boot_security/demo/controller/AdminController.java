@@ -1,7 +1,7 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,11 +28,16 @@ public class AdminController {
     }
 
     @GetMapping("/profile")
-    public String showUserProfile(@RequestParam("id") Long id,
-                                  Model model) {
+    public String showAdminPage(@RequestParam("id") Long id, Model model) {
+
         User user = userService.getUserById(id);
         model.addAttribute("user", user);
-        return "admin/profile";
+
+        List<User> users = userService.getAllUsers();
+        model.addAttribute("allUser", users);
+        model.addAttribute("role_list", roleService.getAllRole());
+
+        return "admin/adminPage";
     }
 
     @GetMapping("/edit")
@@ -43,22 +48,22 @@ public class AdminController {
     }
 
     @PatchMapping("/update")
-    public String update(@ModelAttribute("updatableUser") @Valid User user,
+    public String update(@ModelAttribute @Valid User user,
                          BindingResult bindingResult, @RequestParam("id") Long id) {
 
         if (bindingResult.hasErrors()) {
             return "/admin/edit";
         }
         userService.updateUserById(id, user);
-        return "redirect:/admin/";
+        return String.format("redirect:/admin/profile?id=%s",getCurrentId());
     }
 
-    @GetMapping("/")
-    public String getAllUsers(Model model) {
-        List<User> users = userService.getAllUsers();
-        model.addAttribute("allUser", users);
-        return "admin/users";
-    }
+//    @GetMapping("/")
+//    public String getAllUsers(Model model) {
+//        List<User> users = userService.getAllUsers();
+//        model.addAttribute("allUser", users);
+//        return "admin/adminpage";
+//    }
 
     @GetMapping("/create")
     public String newUser(@ModelAttribute("user") User user, Model model) {
@@ -66,28 +71,30 @@ public class AdminController {
         return "admin/createUser";
     }
 
-    @PostMapping
-    public String create(@ModelAttribute("user") @Valid User user, BindingResult bindingResult,
-                         Model model) {
-        //проверка существует ли такое имя. тк name unique в последствии
-        // можно переделать на email или login
-        if (userService.usernameExist(user.getName())) {
-            bindingResult.rejectValue("name", "error.name", "Пользователь с таким именем уже существует");
+    @PostMapping("/addUser")
+    public String create(@ModelAttribute @Valid User user, BindingResult bindingResult) {
+
+        if (userService.emailExist(user.getEmail())) {
+            bindingResult.rejectValue("email", "error.email", "Пользователь с таким именем уже существует");
             return "admin/createUser";
         }
-
         if (bindingResult.hasErrors()) {
             return "admin/createUser";
         }
 
         userService.addUser(user);
 
-        return "redirect:/admin/";
+        return String.format("redirect:/admin/profile?id=%s",getCurrentId());
     }
 
     @DeleteMapping("/delete")
     public String delete(@RequestParam Long id) {
         userService.removeUserById(id);
-        return "redirect:/admin/";
+        return String.format("redirect:/admin/profile?id=%s",getCurrentId());
+    }
+
+    private long getCurrentId() {
+        User userCurrent = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return userCurrent.getId();
     }
 }

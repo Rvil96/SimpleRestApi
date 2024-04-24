@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
+    <title>User page</title>
+</head>
+<body>
+<!--    Шапка-->
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+					<span class="navbar-text">
+						<strong th:text="${user.getEmail()}"></strong> with role:
+						<span th:each="role, iterStat : ${user.getRoles()}">
+							<span th:text="${role.getAuthority()}"></span>
+							<span th:if="${!iterStat.last}"> </span>
+						</span>
+					</span>
+        <div th:if="${#httpServletRequest.userPrincipal != null}">
+            <form th:action="@{/logout}" method="post">
+                <button class="btn btn-outline-light" type="submit">Выйти</button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid vh-100">
+    <div class="row h-100">
+        <!-- Навигационная панель слева -->
+        <div sec:authorize="isAuthenticated()"  class="col-md-2 px-0">
+            <div sec:authorize="hasRole('ROLE_ADMIN')" class="d-grid gap-1" >
+                <a class="btn btn-link text-start rounded-1 mt-1" th:href="@{/admin/profile(id=${user.getId()})}">Admin</a>
+            </div>
+            <div class="d-grid gap-1">
+                <a class="btn btn-primary text-start rounded-1 mt-1">User</a>
+            </div>
+        </div>
+        <!-- Рабочая область справа -->
+        <div class="col-md-10 bg-light">
+            <h1>User information page</h1>
+            <div class="table-responsive-xl">
+                <!-- Таблица -->
+                <table class="table caption-top">
+                    <caption>
+                        <h3>About user</h3>
+                    </caption>
+                    <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Firs Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Age</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Role</th>
+                    </tr>
+                    </thead>
+                    <tbody class="bg-light">
+                    <tr class="table-active">
+                        <th scope="row">
+                            <a th:utext="${user.getId()}">id</a>
+                        </th>
+                        <td>
+                            <a th:utext="${user.getName()}">name</a>
+                        </td>
+                        <td>
+                            <a th:utext="${user.getSurname()}">surname</a>
+                        </td>
+                        <td>
+                            <a th:utext="${user.getAge()}">Age</a>
+                        </td>
+                        <td>
+                            <a th:utext="${user.getEmail()}">Email</a>
+                        </td>
+                        <td th:each="role : ${user.getRoles()}">
+                            <a th:utext="${role.getAuthority()}">Role</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/bootstrap.min.js}"></script>
+</body>
+</html>
+
