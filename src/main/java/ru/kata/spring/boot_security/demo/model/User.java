@@ -18,6 +18,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
 import java.util.Collection;
 import java.util.Set;
 
@@ -35,13 +36,13 @@ public class User implements UserDetails {
     @Column(name = "firstname")
     @NotEmpty(message = "Name can't be empty")
     @Size(min = 2, max = 24, message = "Min size name 2, max size name 24")
-//    @Pattern(regexp = "^[a-zA-Zа-яА-Я]+$", message = "Does not correspond to the format")
+    @Pattern(regexp = "^[a-zA-Zа-яА-Я]+$", message = "Does not correspond to the format")
     private String name;
 
     @Column(name = "surname")
     @NotEmpty(message = "Surname can't be empty")
     @Size(min = 2, max = 24, message = "Min size surname 2, max size surname 24")
-//    @Pattern(regexp = "^[a-zA-Zа-яА-Я]+$", message = "Does not correspond to the format")
+    @Pattern(regexp = "^[a-zA-Zа-яА-Я]+$", message = "Does not correspond to the format")
     private String surname;
 
     @Column(name = "age")
@@ -143,7 +144,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return name;
+        return email;
     }
 
     @Override

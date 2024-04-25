@@ -2,6 +2,7 @@ package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,10 +12,10 @@ import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin")
 public class AdminController {
     private final UserService userService;
     private final RoleService roleService;
@@ -26,17 +27,17 @@ public class AdminController {
         this.roleService = roleService;
     }
 
-    @GetMapping("/profile")
-    public String showAdminPage(@RequestParam("id") Long id, Model model) {
+    @GetMapping("/admin")
+    public String showAdminPage(Principal principal, Model model) {
 
-        User user = userService.getUserById(id);
-        model.addAttribute("user", user);
+        UserDetailsService userDetailsService = (UserDetailsService) userService;
+        model.addAttribute("user", userDetailsService.loadUserByUsername(principal.getName()));
 
         List<User> users = userService.getAllUsers();
         model.addAttribute("allUser", users);
         model.addAttribute("role_list", roleService.getAllRole());
 
-        return "admin/adminPage";
+        return "admin";
     }
 
 //    @GetMapping("/edit")
@@ -50,7 +51,7 @@ public class AdminController {
     public String update(@ModelAttribute @Valid User user,
                          BindingResult bindingResult, @RequestParam("id") Long id) {
         if (bindingResult.hasErrors()) {
-            return String.format("redirect:/admin/profile?id=%s", getCurrentId());
+            return "redirect:/admin";
         }
 
         if (user.getPassword() == null) {
@@ -59,7 +60,7 @@ public class AdminController {
         }
         userService.updateUserById(id, user);
 
-        return String.format("redirect:/admin/profile?id=%s", getCurrentId());
+        return "redirect:/admin";
     }
 
 //    @GetMapping("/")
@@ -80,25 +81,21 @@ public class AdminController {
 
         if (userService.emailExist(user.getEmail())) {
             bindingResult.rejectValue("email", "error.email", "Пользователь с таким именем уже существует");
-            return String.format("redirect:/admin/profile?id=%s", getCurrentId());
+            return "redirect:/admin";
         }
         if (bindingResult.hasErrors()) {
-            return String.format("redirect:/admin/profile?id=%s", getCurrentId());
+            return "redirect:/admin";
         }
 
         userService.addUser(user);
 
-        return String.format("redirect:/admin/profile?id=%s", getCurrentId());
+        return "redirect:/admin";
     }
 
     @DeleteMapping("/delete")
     public String delete(@RequestParam Long id) {
         userService.removeUserById(id);
-        return String.format("redirect:/admin/profile?id=%s", getCurrentId());
+        return "redirect:/admin";
     }
 
-    private long getCurrentId() {
-        User userCurrent = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return userCurrent.getId();
-    }
 }
