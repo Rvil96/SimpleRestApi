@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 @Configuration
@@ -17,10 +17,10 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final SuccessUserHandler successUserHandler;
     private final UserDetailsService userDetails;
-    private final PasswordEncoderImpl passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public WebSecurityConfig(SuccessUserHandler successUserHandler, UserDetailsService userDetails, PasswordEncoderImpl passwordEncoder) {
+    public WebSecurityConfig(SuccessUserHandler successUserHandler, UserDetailsService userDetails, PasswordEncoder passwordEncoder) {
         this.successUserHandler = successUserHandler;
         this.userDetails = userDetails;
         this.passwordEncoder = passwordEncoder;
@@ -53,16 +53,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/static/**")
-                .addResourceLocations("classpath:/static/");
-    }
-
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetails);
-        provider.setPasswordEncoder(passwordEncoder.getPasswordEncoder());
+        provider.setPasswordEncoder(passwordEncoder);
 
         return provider;
     }

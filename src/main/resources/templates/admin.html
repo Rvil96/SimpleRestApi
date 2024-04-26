@@ -33,7 +33,7 @@
             </div>
             <div class="d-grid gap-1">
                 <a class="btn btn-link text-start rounded-1 mt-1"
-                   th:href="@{/user}">User</a>
+                   th:href="@{/user/}">User</a>
             </div>
         </div>
         <!-- Рабочая область справа -->
@@ -111,7 +111,7 @@
                                                     aria-labelledby="exampleModalLabel"
                                                     aria-hidden="true"
                                                     th:method="PATCH"
-                                                    th:action="@{/update?id={id}(id=${iterableUser.getId()})}"
+                                                    th:action="@{/admin/update?id={id}(id=${iterableUser.getId()})}"
                                                     data-form-id="${'edituser'+iterableUser.getId()}"
                                             >
                                                 <div class="modal-dialog">
@@ -209,7 +209,7 @@
                                         <!--Удаление-->
                                         <td>
                                             <form th:method="DELETE"
-                                                  th:action="@{/delete?id={id}(id=${iterableUser.getId()})}">
+                                                  th:action="@{/admin/delete?id={id}(id=${iterableUser.getId()})}">
                                                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                             </form>
                                         </td>
@@ -224,7 +224,7 @@
                                 <div class="row justify-content-center">
                                     <div class="col-4">
                                         <form th:method="POST"
-                                              th:action="@{/addUser}"
+                                              th:action="@{/admin/addUser}"
                                               id="creat-form">
                                             <div class="form-group">
                                                 <label for="name" class="form-label">First name</label>

@@ -30,7 +30,7 @@
         <!-- Навигационная панель слева -->
         <div sec:authorize="isAuthenticated()"  class="col-md-2 px-0">
             <div sec:authorize="hasRole('ROLE_ADMIN')" class="d-grid gap-1" >
-                <a class="btn btn-link text-start rounded-1 mt-1" th:href="@{/admin}">Admin</a>
+                <a class="btn btn-link text-start rounded-1 mt-1" th:href="@{/admin/}">Admin</a>
             </div>
             <div class="d-grid gap-1">
                 <a class="btn btn-primary text-start rounded-1 mt-1">User</a>
