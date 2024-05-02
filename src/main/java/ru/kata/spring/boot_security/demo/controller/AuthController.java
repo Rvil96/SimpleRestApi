@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class AuthController {
     @GetMapping("/")
     public String authentication() {
-        return "/index";
+        return "index";
     }
 }
